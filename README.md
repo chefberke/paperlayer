@@ -27,6 +27,7 @@ For leaving your desk without putting the Mac to sleep. The screen turns into Ma
 
 - The logo changes color every time it hits a wall.
 - Keeps the display awake while it is on.
+- All motion runs as Core Animation on the GPU, so the app itself stays near 0% CPU.
 - Press any key or click to come back to the app you were using. Moving the mouse does not end it.
 - Start it from the menu or with `⌃⌥B` from anywhere.
 
