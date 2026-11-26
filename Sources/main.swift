@@ -38,6 +38,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             now.target = self
             menu.addItem(now)
         }
+        menu.addItem(timersItem())
 
         menu.addItem(.separator())
         let paper = NSMenuItem(title: "Paper mode", action: #selector(togglePaper), keyEquivalent: "")
@@ -51,6 +52,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+    }
+
+    /// Submenu with a few fixed choices per timing, the current one checked.
+    private func timersItem() -> NSMenuItem {
+        let sub = NSMenu()
+        for setting in TimerSetting.allCases {
+            if setting == .standEvery { sub.addItem(.separator()) }
+            let header = NSMenuItem(title: setting.title, action: nil, keyEquivalent: "")
+            header.isEnabled = false
+            sub.addItem(header)
+            for seconds in setting.options {
+                let option = NSMenuItem(title: TimerSetting.label(seconds), action: #selector(pickTimer(_:)), keyEquivalent: "")
+                option.target = self
+                option.indentationLevel = 1
+                option.representedObject = [setting.rawValue: seconds]
+                option.state = setting.value == seconds ? .on : .off
+                sub.addItem(option)
+            }
+        }
+        let item = NSMenuItem(title: "Timers", action: nil, keyEquivalent: "")
+        item.submenu = sub
+        return item
+    }
+
+    @objc private func pickTimer(_ sender: NSMenuItem) {
+        guard let pick = sender.representedObject as? [String: Int], let (key, seconds) = pick.first,
+              let setting = TimerSetting(rawValue: key) else { return }
+        setting.value = seconds
     }
 
     private func refreshIcon() {

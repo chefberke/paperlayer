@@ -10,8 +10,8 @@ enum BreakKind {
 
     var seconds: Int {
         switch self {
-        case .eyes: return 20
-        case .stand: return 5 * 60
+        case .eyes: return TimerSetting.eyeLength.value
+        case .stand: return TimerSetting.standLength.value
         }
     }
 
@@ -25,23 +25,26 @@ enum BreakKind {
     var message: String {
         switch self {
         case .eyes: return "Look at something 20 feet (6 m) away and blink slowly a few times."
-        case .stand: return "You have been at the screen for an hour. Stand up, stretch and walk for 5 minutes."
+        case .stand:
+            let seated = TimerSetting.standEvery.value / 60
+            let sitting = seated == 60 ? "an hour" : "\(seated) minutes"
+            return "You have been at the screen for \(sitting). Stand up, stretch and walk for \(seconds / 60) minutes."
         }
     }
 }
 
 /// Break reminders: after 20 minutes of active use, dim every screen for 20 seconds and
 /// ask the user to look far away. After an hour at the screen with no real pause, ask
-/// them to stand up for 5 minutes.
+/// them to stand up for 5 minutes. All four timings can be changed from the menu.
 final class BreakReminder {
-    private static let workLimit: TimeInterval = 20 * 60
+    private static var workLimit: TimeInterval { TimeInterval(TimerSetting.eyeEvery.value) }
     private static let tick: TimeInterval = 15
     /// Idle this long already counts as a break, so the count restarts.
     private static let naturalBreak: TimeInterval = 5 * 60
     /// Idle this long means the user stepped away; that time is not counted as work.
     private static let away: TimeInterval = 60
     /// At the screen this long without a pause of `standPause` asks for a stand-up break.
-    private static let standLimit: TimeInterval = 60 * 60
+    private static var standLimit: TimeInterval { TimeInterval(TimerSetting.standEvery.value) }
     /// Idle this long counts as having left the desk, so the hour starts over.
     private static let standPause: TimeInterval = 2 * 60
 

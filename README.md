@@ -21,6 +21,10 @@ After an hour at the screen without stepping away, every screen dims for 5 minut
 - Uses the same panel as eye breaks: it never steals focus and only Close ends it early.
 - Runs together with eye breaks and is switched on and off with them.
 
+### Timers
+
+The **Timers** submenu sets how often each break comes and how long it lasts, from a few fixed choices: eye break every 15/20/30/45 min, eye break length 20 sec/30 sec/1 min, stand up after 30/45/60/90 min, stand-up break length 2/5/10 min. Choices are kept across restarts.
+
 ### Paper mode
 
 A light matte paper texture over every screen, inspired by [Paperman](https://paperman.cc/). It softens glare and harsh contrast without shifting colors.
@@ -56,11 +60,12 @@ The app lives in the menu bar as an eye icon and has no Dock icon. The icon look
 
 ## Tuning
 
-There is no settings window on purpose. The numbers are constants at the top of the source files:
+There is no settings window on purpose. Break timings are in the Timers menu; the rest are constants at the top of the source files:
 
 | What | Where |
 | --- | --- |
-| Work time, break lengths, stand-up hour, idle limits | `Sources/Breaks.swift` |
+| Idle limits | `Sources/Breaks.swift` |
+| Timer choices and defaults | `Sources/Settings.swift` |
 | Paper texture strength (`coverage`) | `Sources/Overlay.swift` |
 | Rain, logo size and speed | `Sources/Away.swift` |
 
@@ -74,7 +79,7 @@ Sources/
   Texture.swift    procedural paper texture
   Away.swift       away screen: rain, bouncing logo, note
   HotKey.swift     global shortcuts through Carbon, no Accessibility permission needed
-  Settings.swift   the two on/off switches, stored in UserDefaults
+  Settings.swift   on/off switches and break timings, stored in UserDefaults
 Resources/
   eatbetter-logo.png
 ```
