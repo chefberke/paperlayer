@@ -1,6 +1,6 @@
 # Paperlayer
 
-A tiny native macOS menu bar app for tired eyes and empty desks. Pure Swift and AppKit, no Xcode project, no dependencies, under 700 lines.
+A tiny native macOS menu bar app for tired eyes and empty desks. Pure Swift and AppKit, no Xcode project, no dependencies, under 800 lines.
 
 ## Features
 
@@ -10,8 +10,16 @@ Follows the 20-20-20 rule: after 20 minutes of active use, every screen dims for
 
 - Counts only active time. Idle for more than a minute does not count as work.
 - Idle for 5 minutes counts as a natural break, so the timer restarts. Waking the Mac from sleep restarts it too.
-- The break panel never steals focus, so typing and games keep their input. Click anywhere to skip.
+- The break panel never steals focus, so typing and games keep their input. Only its Close button ends the break early, so a stray click while working does not dismiss it.
 - On by default. Toggle from the menu or with `⌃⌥P` from anywhere.
+
+### Stand-up breaks
+
+After an hour at the screen without stepping away, every screen dims for 5 minutes and asks you to stand up, stretch and walk.
+
+- Being idle for more than 2 minutes counts as stepping away, so the hour starts over.
+- Uses the same panel as eye breaks: it never steals focus and only Close ends it early.
+- Runs together with eye breaks and is switched on and off with them.
 
 ### Paper mode
 
@@ -52,7 +60,7 @@ There is no settings window on purpose. The numbers are constants at the top of 
 
 | What | Where |
 | --- | --- |
-| Work time, break length, idle limits | `Sources/Breaks.swift` |
+| Work time, break lengths, stand-up hour, idle limits | `Sources/Breaks.swift` |
 | Paper texture strength (`coverage`) | `Sources/Overlay.swift` |
 | Rain, logo size and speed | `Sources/Away.swift` |
 
@@ -61,7 +69,7 @@ There is no settings window on purpose. The numbers are constants at the top of 
 ```
 Sources/
   main.swift       menu bar item, menu and shortcuts
-  Breaks.swift     20-20-20 timer and the break panel
+  Breaks.swift     eye and stand-up timers and the break panel
   Overlay.swift    click-through paper windows
   Texture.swift    procedural paper texture
   Away.swift       away screen: rain, bouncing logo, note
